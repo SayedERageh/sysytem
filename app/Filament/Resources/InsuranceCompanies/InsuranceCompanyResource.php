@@ -14,12 +14,20 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class InsuranceCompanyResource extends Resource
 {
     protected static ?string $model = InsuranceCompany::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+protected static ?string $navigationLabel = 'شركة التأمين';
+protected static ?string $pluralModelLabel = 'شركات التأمين';
+protected static ?string $modelLabel = 'شركة التأمين';
+
+// مكانه في القائمة
+protected static string|UnitEnum|null $navigationGroup = 'إدارة شركات التأمين';
+protected static ?int $navigationSort = 3;
+protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck; // أيقونة مناسبة لشركة التأمين
 
     public static function form(Schema $schema): Schema
     {

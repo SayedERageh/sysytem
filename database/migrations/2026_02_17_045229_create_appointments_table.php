@@ -1,5 +1,6 @@
 <?php
 
+use Filament\Forms\Components\Select;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -28,11 +29,16 @@ public function up(): void
         $table->decimal('service_price',10,2);
 
         // status
-        $table->enum('status', [
-            'لم ياتي',
-            'في الانتظار',
-            'تم الكشف'
-        ])->default('في الانتظار');
+Select::make('status')
+    ->label('الحالة')
+    ->options([
+        'لم ياتي'      => 'لم ياتي',
+        'في الانتظار'  => 'في الانتظار',
+        'تم الكشف'     => 'تم الكشف',
+    ])
+    ->default('في الانتظار');
+
+
 
         $table->foreignId('insurance_company_id')
               ->nullable()

@@ -13,12 +13,20 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+protected static ?string $navigationLabel = 'المريض';
+protected static ?string $pluralModelLabel = 'المريض';
+protected static ?string $modelLabel = 'المريض';
+
+// مكانه في القائمة
+protected static string|UnitEnum|null $navigationGroup = 'إدارة المرضى';
+protected static ?int $navigationSort = 2;
+protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser; // أيقونة مناسبة للمريض
 
     public static function form(Schema $schema): Schema
     {

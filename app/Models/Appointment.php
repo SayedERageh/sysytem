@@ -44,4 +44,10 @@ class Appointment extends Model
     {
         return $this->belongsTo(InsuranceCompany::class,'insurance_company_id');
     }
+    // App\Models\Appointment.php
+public function insurancePrice()
+{
+    return $this->belongsTo(InsurancePrice::class, 'insurance_price_id');
+}
+
 }
