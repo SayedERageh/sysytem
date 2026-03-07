@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Appointments\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -65,9 +66,29 @@ class AppointmentsTable
             ->filters([
                 //
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
+          ->recordActions([
+
+    EditAction::make(),
+
+    Action::make('pdf')
+        ->label('PDF')
+        ->icon('heroicon-o-printer')
+->url(fn ($record) => route('appointment.pdf', $record->id))        ->openUrlInNewTab(),
+
+    Action::make('whatsapp')
+        ->label('واتساب')
+        ->icon('heroicon-o-chat-bubble-left-right')
+        ->url(fn ($record) =>
+            'https://wa.me/2'.$record->patient->phone.'?text='.urlencode(
+                "مرحبًا {$record->patient->name}\n".
+                "موعدك مع الدكتور {$record->doctor->name}\n".
+                "الخدمة: {$record->service_name}\n".
+                "التاريخ: {$record->appointment_date}"
+            )
+        )
+        ->openUrlInNewTab(),
+
+])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

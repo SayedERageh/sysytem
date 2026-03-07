@@ -12,7 +12,7 @@ use App\Models\Radiology;
 use Carbon\Carbon;
 
 class StatsOverview extends BaseWidget
-{
+{protected static ?int $sort = 1;
     protected function getStats(): array
     {
         return [
