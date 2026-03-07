@@ -49,5 +49,10 @@ public function insurancePrice()
 {
     return $this->belongsTo(InsurancePrice::class, 'insurance_price_id');
 }
+public function labRequests()
+{
+    return $this->hasMany(LabRequest::class);
+}
+
 
 }

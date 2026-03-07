@@ -20,14 +20,16 @@ class InsuranceCompanyResource extends Resource
 {
     protected static ?string $model = InsuranceCompany::class;
 
-protected static ?string $navigationLabel = 'شركة التأمين';
-protected static ?string $pluralModelLabel = 'شركات التأمين';
-protected static ?string $modelLabel = 'شركة التأمين';
+protected static ?string $navigationLabel = 'المرضى';
+protected static ?string $pluralModelLabel = 'المرضى';
+protected static ?string $modelLabel = 'مريض';
 
 // مكانه في القائمة
-protected static string|UnitEnum|null $navigationGroup = 'إدارة شركات التأمين';
-protected static ?int $navigationSort = 3;
-protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck; // أيقونة مناسبة لشركة التأمين
+protected static string|UnitEnum|null $navigationGroup = 'إدارة المرضى';
+protected static ?int $navigationSort = 1;
+
+// أيقونة مناسبة للمرضى
+protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
 
     public static function form(Schema $schema): Schema
     {
