@@ -9,12 +9,18 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Builder;
 
 class AppointmentsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+
+            ->defaultSort('appointment_date')
+
             ->columns([
 
                 TextColumn::make('patient.name')
@@ -63,32 +69,50 @@ class AppointmentsTable
                     ->money('EGP'),
 
             ])
+
             ->filters([
-                //
+
+                Filter::make('appointment_date')
+                    ->label('اليوم')
+                    ->form([
+                        DatePicker::make('date')
+                            ->label('اختر اليوم')
+                            ->default(now()),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when(
+                            $data['date'],
+                            fn ($query) => $query->whereDate('appointment_date', $data['date'])
+                        );
+                    }),
+
             ])
-          ->recordActions([
 
-    EditAction::make(),
+            ->recordActions([
 
-    Action::make('pdf')
-        ->label('PDF')
-        ->icon('heroicon-o-printer')
-->url(fn ($record) => route('appointment.pdf', $record->id))        ->openUrlInNewTab(),
+                EditAction::make(),
 
-    Action::make('whatsapp')
-        ->label('واتساب')
-        ->icon('heroicon-o-chat-bubble-left-right')
-        ->url(fn ($record) =>
-            'https://wa.me/2'.$record->patient->phone.'?text='.urlencode(
-                "مرحبًا {$record->patient->name}\n".
-                "موعدك مع الدكتور {$record->doctor->name}\n".
-                "الخدمة: {$record->service_name}\n".
-                "التاريخ: {$record->appointment_date}"
-            )
-        )
-        ->openUrlInNewTab(),
+                Action::make('pdf')
+                    ->label('PDF')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn ($record) => route('appointment.pdf', $record->id))
+                    ->openUrlInNewTab(),
 
-])
+                Action::make('whatsapp')
+                    ->label('واتساب')
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->url(fn ($record) =>
+                        'https://wa.me/2'.$record->patient->phone.'?text='.urlencode(
+                            "مرحبًا {$record->patient->name}\n".
+                            "نشكرك علي حجزك مع الدكتور {$record->doctor->name}\n".
+                            "الخدمة: {$record->service_name}\n".
+                            "التاريخ: {$record->appointment_date}"
+                        )
+                    )
+                    ->openUrlInNewTab(),
+
+            ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

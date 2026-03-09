@@ -19,7 +19,7 @@ class MissedAppointmentsTable extends TableWidget
         return $table
             ->query(
                 Appointment::query()
-                    ->where('status', 'pending')
+                    ->where('status', 'absent')
                     ->with(['patient','doctor'])
             )
 

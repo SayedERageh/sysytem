@@ -89,7 +89,6 @@
             <p>📱 <strong>واتساب:</strong> <a href="https://wa.me/201120112231" target="_blank" class="underline text-white">01120112231</a></p>
             <p>📞 <strong>اتصال مباشر:</strong> 01022558536</p>
             <p>🔵 <strong>فيسبوك:</strong> اسنان مصر دكتور باسم لاشين</p>
-            <p class="mt-2 font-bold text-lg">90 مليون ضحكة</p>
         </div>
 
     </div>
