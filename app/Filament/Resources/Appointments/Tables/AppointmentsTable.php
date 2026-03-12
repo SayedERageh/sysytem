@@ -23,10 +23,23 @@ class AppointmentsTable
 
             ->columns([
 
-                TextColumn::make('patient.name')
-                    ->label('المريض')
-                    ->sortable()
-                    ->searchable(),
+
+
+TextColumn::make('patient.name')
+    ->label('المريض')
+    ->sortable()
+    ->searchable()
+    ->formatStateUsing(function ($state, $record) {
+        // id المريض
+        $patientId = $record->patient->id;
+
+        // الرابط المباشر للـ edit في Doctor Panel
+        $url = url("/doctor/patients/{$patientId}/edit");
+
+        // نرجع HTML للرابط
+        return '<a href="'.$url.'" class="text-blue-600 hover:underline">'.$state.'</a>';
+    })
+    ->html(), // مهم جداً عشان Filament تعرف أن الكود HTML
 
                 TextColumn::make('doctor.name')
                     ->label('الدكتور')
@@ -37,9 +50,7 @@ class AppointmentsTable
                     ->label('التاريخ')
                     ->date(),
 
-                TextColumn::make('appointment_time')
-                    ->label('الوقت'),
-
+           
                 TextColumn::make('service_name')
                     ->label('الخدمة')
                     ->sortable(),
@@ -57,16 +68,7 @@ class AppointmentsTable
                     ])
                     ->sortable(),
 
-                TextColumn::make('insurance_company.name')
-                    ->label('شركة التأمين'),
-
-                TextColumn::make('paid')
-                    ->label('المدفوع')
-                    ->money('EGP'),
-
-                TextColumn::make('remaining')
-                    ->label('المتبقي')
-                    ->money('EGP'),
+            
 
             ])
 

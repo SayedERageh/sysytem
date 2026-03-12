@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; // مهم للتسجيل
+use Illuminate\Notifications\Notifiable;
 
-class Doctor extends Model
+class Doctor extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'doctors';
 
@@ -16,13 +17,22 @@ class Doctor extends Model
         'phone',
         'image',
         'working_hours',
+        'email',      // تم إضافته
+        'password',   // تم إضافته
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     protected $casts = [
         'working_hours' => 'array',
     ];
+
+    // العلاقة مع المواعيد
     public function appointments()
-{
-    return $this->hasMany(Appointment::class);
-}
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

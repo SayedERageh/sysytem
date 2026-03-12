@@ -18,31 +18,32 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
-class AdminPanelProvider extends PanelProvider
+class DoctorPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
-        ->default()
-        ->id('admin')
-        ->path('admin')
-            ->viteTheme('resources/css/filament/admin/theme.css')
+       return $panel
+    ->id('doctor')
+    ->path('doctor')
+    ->login()
+         ->viteTheme('resources/css/filament/admin/theme.css')
         ->login()
-        ->brandName('اسنان مصر') // 👈 اسم التطبيق
-        ->colors([
-            'primary' => Color::Blue, // 👈 اللون الأحمر
-        ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-             
-            ])
+        ->brandName(' وجــهــة الدكتور  ') // 👈 اسم التطبيق
+    ->authGuard('doctor')
+    ->colors([
+        'primary' => Color::Amber,
+    ])
+    ->discoverResources(in: app_path('Filament/Doctor/Resources'), for: 'App\\Filament\\Doctor\\Resources')
+    ->discoverPages(in: app_path('Filament/Doctor/Pages'), for: 'App\\Filament\\Doctor\\Pages')
+    ->pages([
+        Dashboard::class,
+    ])
+    ->discoverWidgets(in: app_path('Filament/Doctor/Widgets'), for: 'App\\Filament\\Doctor\\Widgets')
+    ->widgets([
+     
+    ])
+            
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -56,10 +57,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->plugins([
-                FilamentFullCalendarPlugin::make(),
-            ])
-          ->viteTheme('resources/css/filament/admin/theme.css');   
+            ]);
     }
 }

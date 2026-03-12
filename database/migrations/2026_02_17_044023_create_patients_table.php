@@ -17,6 +17,7 @@ return new class extends Migration
         $table->string('phone');
         $table->string('insurance_number')->nullable();
 
+        
         $table->foreignId('insurance_company_id')
               ->constrained('insurance_companies')
               ->onDelete('cascade');

@@ -19,13 +19,22 @@ class Appointment extends Model
         'insurance_company_id',
         'paid',
         'remaining',
+        'diagnosis_chart',   // جديد
+        'teeth_number',      // جديد
+        'teeth_length',      // جديد
+        'next_session',      // جديد
+        'notes',  
+        'approval_difference'  ,         // جديد
+        'payment_method'  ,         // جديد
     ];
 
     protected $casts = [
         'appointment_date' => 'datetime',
-        'service_price' => 'decimal:2',
-        'paid' => 'decimal:2',
-        'remaining' => 'decimal:2',
+        'service_price'    => 'decimal:2',
+        'paid'             => 'decimal:2',
+        'remaining'        => 'decimal:2',
+        'diagnosis_chart'  => 'array', // تحويل JSON تلقائيًا إلى مصفوفة
+        'teeth_number'     => 'array', // تحويل JSON تلقائيًا إلى مصفوفة
     ];
 
     /* ========= Relations ========= */
@@ -42,17 +51,16 @@ class Appointment extends Model
 
     public function company()
     {
-        return $this->belongsTo(InsuranceCompany::class,'insurance_company_id');
+        return $this->belongsTo(InsuranceCompany::class, 'insurance_company_id');
     }
-    // App\Models\Appointment.php
-public function insurancePrice()
-{
-    return $this->belongsTo(InsurancePrice::class, 'insurance_price_id');
-}
-public function labRequests()
-{
-    return $this->hasMany(LabRequest::class);
-}
 
+    public function insurancePrice()
+    {
+        return $this->belongsTo(InsurancePrice::class, 'insurance_price_id');
+    }
 
+    public function labRequests()
+    {
+        return $this->hasMany(LabRequest::class);
+    }
 }

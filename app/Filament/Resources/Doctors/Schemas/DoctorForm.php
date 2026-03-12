@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Doctors\Schemas;
            use Filament\Forms\Components\TagsInput;
+use Illuminate\Support\Facades\Hash;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
@@ -19,7 +20,18 @@ class DoctorForm
                     ->label('اسم الدكتور')
                     ->required()
                     ->maxLength(255),
+      TextInput::make('email')
+                    ->label('البريد الإلكتروني')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
 
+TextInput::make('password')
+    ->label('كلمة المرور')
+    ->password()
+    ->required()
+    ->maxLength(255)
+    ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
                 TextInput::make('phone')
                     ->label('رقم الهاتف')
                     ->required()

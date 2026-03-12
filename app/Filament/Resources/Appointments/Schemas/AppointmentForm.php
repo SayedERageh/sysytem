@@ -93,30 +93,43 @@ class AppointmentForm
                     ->columns(2),
 
                 Tab::make('الحالة والحسابات')
-                    ->icon(Heroicon::CurrencyDollar)
-                    ->schema([
+    ->icon(Heroicon::CurrencyDollar)
+    ->schema([
 
-                        Select::make('status')
-                            ->label('الحالة')
-                            ->options([
-                                'pending' => 'في الانتظار',
-                                'done' => 'تم الكشف',
-                                'absent' => 'لم يأت',
-                            ])
-                            ->default('pending'),
+        Select::make('status')
+            ->label('الحالة')
+            ->options([
+                'pending' => 'في الانتظار',
+                'done' => 'تم الكشف',
+                'absent' => 'لم يأت',
+            ])
+            ->default('pending'),
 
-                        TextInput::make('paid')
-                            ->label('المدفوع')
-                            ->numeric()
-                            ->default(0),
+        TextInput::make('paid')
+            ->label('المدفوع')
+            ->numeric()
+            ->default(0),
 
-                        TextInput::make('remaining')
-                            ->label('المتبقي')
-                            ->numeric()
-                            ->default(0),
+        TextInput::make('remaining')
+            ->label('المتبقي')
+            ->numeric()
+            ->default(0),
 
-                    ])
-                    ->columns(3),
+        TextInput::make('approval_difference')
+            ->label('فرق الموافقة')
+            ->numeric()
+            ->nullable(),
+
+        Select::make('payment_method')
+            ->label('طريقة الدفع')
+            ->options([
+                'cash' => 'كاش',
+                'instapay' => 'إنستا باي',
+            ])
+            ->placeholder('اختر طريقة الدفع'),
+
+    ])
+    ->columns(3),
 
             ])
             ->persistTab() // يحفظ التاب المفتوح

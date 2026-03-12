@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Patients\Schemas;
+namespace App\Filament\Doctor\Resources\Patients\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;

@@ -36,4 +36,13 @@ class Patient extends Model
 {
     return $this->hasMany(Appointment::class);
 }
+
+public function labRequests()
+{
+    return $this->hasMany(\App\Models\LabRequest::class);
+}
+public function radiologies()
+{
+    return $this->hasMany(Radiology::class);
+}
 }
