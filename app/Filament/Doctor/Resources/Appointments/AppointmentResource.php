@@ -14,21 +14,19 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
-    use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 class AppointmentResource extends Resource
 
 {
 
 
-    public static function getEloquentQuery(): Builder
-    {
-        // ناخد الاستعلام الأساسي من Resource
-        return parent::getEloquentQuery()
-            ->where('doctor_id', auth()->id()); // ID الدكتور المسجل دخول
-    }
 
-    // ...
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->where('doctor_id', Auth::id());
+}
 
     
 protected static ?string $navigationLabel = 'الحجوزات';

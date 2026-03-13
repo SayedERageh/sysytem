@@ -38,7 +38,10 @@ class Appointment extends Model
     ];
 
     /* ========= Relations ========= */
-
+protected $attributes = [
+    'service_name' => 'كشف \ متابعة',
+    'service_price' => 0,
+];
     public function patient()
     {
         return $this->belongsTo(Patient::class);
@@ -63,4 +66,5 @@ class Appointment extends Model
     {
         return $this->hasMany(LabRequest::class);
     }
+    
 }

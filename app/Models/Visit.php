@@ -15,7 +15,6 @@ class Visit extends Model
         'doctor_id',
         'name',
         'start',
-        'end',
     ];
 
     // علاقة زيارة بالمريض

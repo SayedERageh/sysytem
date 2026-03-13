@@ -2,10 +2,13 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Appointment;
 use Carbon\Carbon;
 use App\Models\Visit;
 use App\Models\Patient;
 use App\Models\Doctor;
+use App\Models\InsuranceCompany;
+use App\Models\InsurancePrice;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -20,24 +23,26 @@ class CalendarWidget extends FullCalendarWidget
     protected static ?string $heading = 'مواعيد العيادة';
 
     // ربط الكالندر بالموديل
-    public Model|string|null $model = Visit::class;
-
-  public function config(): array
+public Model|string|null $model = Appointment::class;
+public function config(): array
 {
     return [
         'initialView' => 'timeGridDay',
-        'slotMinTime' => '08:00:00',
-        'slotMaxTime' => '22:00:00',
 
-        // السماح بالسحب
+        // يبدأ من 10 صباحا
+        'slotMinTime' => '10:00:00',
+
+        // ينتهي 12 مساء (منتصف الليل)
+        'slotMaxTime' => '24:00:00',
+
+        'slotDuration' => '00:30:00',
+        'defaultTimedEventDuration' => '00:30:00',
+
         'editable' => true,
-
-        // السماح بتغيير مدة الموعد
-        'eventDurationEditable' => true,
     ];
 }
 
-   public function fetchEvents(array $fetchInfo): array
+ public function fetchEvents(array $fetchInfo): array
 {
     $start = Carbon::parse($fetchInfo['start']);
     $end = Carbon::parse($fetchInfo['end']);
@@ -49,45 +54,32 @@ class CalendarWidget extends FullCalendarWidget
         4 => '#ef4444',
     ];
 
-    return Visit::with(['patient', 'doctor'])
-        ->where('start', '>=', $start)
-        ->where('end', '<=', $end)
+    return Appointment::with(['doctor', 'company'])
+        ->where('appointment_date', '>=', $start)
+        ->where('appointment_date', '<=', $end)
         ->get()
-        ->map(function (Visit $visit) use ($doctorColors) {
+        ->map(function (Appointment $appointment) use ($doctorColors) {
 
-            $color = $doctorColors[$visit->doctor_id] ?? '#6366f1';
+            $color = $doctorColors[$appointment->doctor_id] ?? '#6366f1';
 
             return [
-                'id' => $visit->id,
-                'title' => $visit->doctor->name . ' - ' . $visit->patient->name,
-                'start' => $visit->start,
-                'end' => $visit->end,
-                'allDay' => false,
+                'id' => $appointment->id,
+                'title' => $appointment->doctor->name . ' - ' . ($appointment->company->name ?? 'بدون تأمين'),
+                'start' => $appointment->appointment_date,
+      'service_name' => 'كشف \ متابعه',
+        'service_price' => 0,                
                 'backgroundColor' => $color,
                 'borderColor' => $color,
             ];
         })
         ->toArray();
 }
-protected function getDefaultEventData(): array
-{
-    $start = $this->mountedActionArguments['start'] ?? now();
 
-    $startDate = Carbon::parse($start);
-    $endDate = $startDate->copy()->addHour();
-
-    return [
-        'start' => $startDate,
-        'end' => $endDate,
-    ];
-}
  public function getFormSchema(): array
 {
     return [
 
-        TextInput::make('name')
-            ->label('نوع الزيارة')
-            ->required(),
+      
 
         Select::make('patient_id')
             ->label('المريض')
@@ -101,18 +93,27 @@ protected function getDefaultEventData(): array
             ->searchable()
             ->required(),
 
-        DateTimePicker::make('start')
-            ->label('بداية الموعد')
-            ->required(),
+       Select::make('insurance_company_id')
+                            ->label('شركة التأمين')
+                            ->options(InsuranceCompany::pluck('name','id')->toArray())
+                            ->required()
+                           ,
 
-        DateTimePicker::make('end')
-            ->label('نهاية الموعد')
-            ->required(),
+                        TextInput::make('service_name')
+                        ->default('كشف عادي او متابعه')
+                            ->hidden(),
 
-        Toggle::make('allDay')
-            ->label('كل اليوم')
-            ->default(false)
-            ->hidden(),
+                        TextInput::make('service_price')
+                            ->label('سعر الخدمة')
+                            ->numeric()
+                            ->default(0)
+                           ->hidden(),
+                    
+
+DateTimePicker::make('appointment_date')
+    ->label('موعد الحجز')
+    ->required()
+    ->default(fn () => Carbon::now()) // التاريخ والوقت الحالي
 
     ];
 }
