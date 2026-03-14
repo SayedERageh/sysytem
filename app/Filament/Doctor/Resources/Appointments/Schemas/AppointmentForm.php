@@ -28,8 +28,8 @@ class AppointmentForm
                 ->label('طول العصب (W . L)'),
 
                 // معلومات الزيارة القادمة
-                DateTimePicker::make('next_session')
-                    ->label('موعد الزيارة القادمة'),
+                TextInput::make('next_session')
+                    ->label('هنعمل اي  الزيارة القادمة'),
 
                 // ملاحظات
                 Textarea::make('notes')

@@ -15,6 +15,11 @@ class TeethProcedure extends Model
         'w_l',              // طول العصب
     ];
 
+    protected $casts = [
+        'tooth_number' => 'integer',
+        'w_l' => 'float',
+    ];
+    
     public function appointment()
     {
         return $this->belongsTo(Appointment::class);

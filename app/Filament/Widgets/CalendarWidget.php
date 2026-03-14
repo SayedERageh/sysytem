@@ -41,12 +41,8 @@ public function config(): array
         'editable' => true,
     ];
 }
-
- public function fetchEvents(array $fetchInfo): array
+public function fetchEvents(array $fetchInfo): array
 {
-    $start = Carbon::parse($fetchInfo['start']);
-    $end = Carbon::parse($fetchInfo['end']);
-
     $doctorColors = [
         1 => '#3b82f6',
         2 => '#22c55e',
@@ -55,19 +51,23 @@ public function config(): array
     ];
 
     return Appointment::with(['doctor', 'company'])
-        ->where('appointment_date', '>=', $start)
-        ->where('appointment_date', '<=', $end)
+        ->whereBetween('appointment_date', [
+            $fetchInfo['start'],
+            $fetchInfo['end']
+        ])
         ->get()
         ->map(function (Appointment $appointment) use ($doctorColors) {
+
+            $start = $appointment->appointment_date;
+            $end = $appointment->appointment_date->copy()->addMinutes(30);
 
             $color = $doctorColors[$appointment->doctor_id] ?? '#6366f1';
 
             return [
                 'id' => $appointment->id,
-                'title' => $appointment->doctor->name . ' - ' . ($appointment->company->name ?? 'بدون تأمين'),
-                'start' => $appointment->appointment_date,
-      'service_name' => 'كشف \ متابعه',
-        'service_price' => 0,                
+                'title' => $appointment->patient->name . ' - ' . $appointment->doctor->name,
+                'start' => $start,
+                'end' => $end,
                 'backgroundColor' => $color,
                 'borderColor' => $color,
             ];
