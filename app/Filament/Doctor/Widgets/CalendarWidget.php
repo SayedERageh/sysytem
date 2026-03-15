@@ -3,13 +3,8 @@
 namespace App\Filament\Doctor\Widgets;
 
 use App\Models\Appointment;
-use App\Models\Patient;
-use App\Models\InsuranceCompany;
 use Carbon\Carbon;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -30,12 +25,13 @@ class CalendarWidget extends FullCalendarWidget
             'slotMaxTime' => '24:00:00',
             'slotDuration' => '00:30:00',
             'defaultTimedEventDuration' => '00:30:00',
-            'editable' => true,
+            'editable' => false,
+            'nowIndicator' => true,
         ];
     }
 
     /**
-     * هنا الفلترة الحقيقية للمواعيد
+     * فلترة المواعيد للدكتور الحالي
      */
     protected function getEloquentQuery(): Builder
     {
@@ -57,14 +53,22 @@ class CalendarWidget extends FullCalendarWidget
             ->get()
             ->map(function (Appointment $appointment) {
 
+                $startDate = Carbon::parse($appointment->appointment_date)
+                    ->setTimeFromTimeString($appointment->appointment_time);
+
+                $endDate = $startDate->copy()->addMinutes(30);
+
                 return [
                     'id' => $appointment->id,
+
                     'title' =>
                         ($appointment->patient->name ?? 'مريض')
                         .' - '.
                         ($appointment->company->name ?? 'بدون تأمين'),
 
-                    'start' => $appointment->appointment_date,
+                    'start' => $startDate->toIso8601String(),
+                    'end' => $endDate->toIso8601String(),
+
                     'backgroundColor' => '#3b82f6',
                     'borderColor' => '#3b82f6',
                 ];
@@ -73,12 +77,10 @@ class CalendarWidget extends FullCalendarWidget
     }
 
     /**
-     * الفورم
+     * الفورم (الدكتور لا ينشئ موعد)
      */
     public function getFormSchema(): array
     {
-        return [
-
-        ];
+        return [];
     }
 }

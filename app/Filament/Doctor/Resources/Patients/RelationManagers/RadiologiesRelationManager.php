@@ -57,6 +57,7 @@ class RadiologiesRelationManager extends RelationManager
 
                 ImageColumn::make('images')
                     ->label('Images')
+                    ->disk('public')
                     ->stacked()
                     ->limit(3),
             ])

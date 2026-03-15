@@ -31,7 +31,6 @@ class AppointmentForm
                             ->label('المريض')
                             ->relationship('patient', 'name')
                             ->searchable()
-                            ->preload()
                             ->required(),
 
                         Select::make('doctor_id')

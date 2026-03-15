@@ -3,119 +3,115 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Appointment;
-use Carbon\Carbon;
-use App\Models\Visit;
-use App\Models\Patient;
-use App\Models\Doctor;
 use App\Models\InsuranceCompany;
-use App\Models\InsurancePrice;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 use Illuminate\Database\Eloquent\Model;
 
 class CalendarWidget extends FullCalendarWidget
 {
-    protected static bool $isDiscovered = false;
-    
     protected static ?string $heading = 'مواعيد العيادة';
 
-    // ربط الكالندر بالموديل
-public Model|string|null $model = Appointment::class;
-public function config(): array
-{
-    return [
-        'initialView' => 'timeGridDay',
+    public Model|string|null $model = Appointment::class;
 
-        // يبدأ من 10 صباحا
-        'slotMinTime' => '10:00:00',
+    public function config(): array
+    {
+        return [
+            'initialView' => 'timeGridDay',
 
-        // ينتهي 12 مساء (منتصف الليل)
-        'slotMaxTime' => '24:00:00',
+            'slotMinTime' => '10:00:00',
 
-        'slotDuration' => '00:30:00',
-        'defaultTimedEventDuration' => '00:30:00',
+            'slotMaxTime' => '24:00:00',
 
-        'editable' => true,
-    ];
-}
-public function fetchEvents(array $fetchInfo): array
-{
-    $doctorColors = [
-        1 => '#3b82f6',
-        2 => '#22c55e',
-        3 => '#f59e0b',
-        4 => '#ef4444',
-    ];
+            'slotDuration' => '00:30:00',
 
-    return Appointment::with(['doctor', 'company'])
-        ->whereBetween('appointment_date', [
-            $fetchInfo['start'],
-            $fetchInfo['end']
-        ])
-        ->get()
-        ->map(function (Appointment $appointment) use ($doctorColors) {
+            'defaultTimedEventDuration' => '00:30:00',
 
-            $start = $appointment->appointment_date;
-            $end = $appointment->appointment_date->copy()->addMinutes(30);
+            'editable' => true,
 
-            $color = $doctorColors[$appointment->doctor_id] ?? '#6366f1';
+            'nowIndicator' => true,
+        ];
+    }
 
-            return [
-                'id' => $appointment->id,
-                'title' => $appointment->patient->name . ' - ' . $appointment->doctor->name,
-                'start' => $start,
-                'end' => $end,
-                'backgroundColor' => $color,
-                'borderColor' => $color,
-            ];
-        })
-        ->toArray();
-}
+    public function fetchEvents(array $fetchInfo): array
+    {
+        $doctorColors = [
+            1 => '#3b82f6',
+            2 => '#22c55e',
+            3 => '#f59e0b',
+            4 => '#ef4444',
+        ];
 
- public function getFormSchema(): array
-{
-    return [
+        return Appointment::with(['patient','doctor'])
+            ->whereBetween('appointment_date', [
+                $fetchInfo['start'],
+                $fetchInfo['end']
+            ])
+            ->get()
+            ->map(function (Appointment $appointment) use ($doctorColors) {
 
-      
+              $start = Carbon::parse($appointment->appointment_date)
+            ->setTimeFromTimeString($appointment->appointment_time);
 
-        Select::make('patient_id')
-            ->label('المريض')
-            ->options(Patient::pluck('name', 'id'))
-            ->searchable()
-            ->required(),
+                $end = $start->copy()->addMinutes(30);
 
-        Select::make('doctor_id')
-            ->label('الدكتور')
-            ->options(Doctor::pluck('name', 'id'))
-            ->searchable()
-            ->required(),
+                $color = $doctorColors[$appointment->doctor_id] ?? '#6366f1';
 
-       Select::make('insurance_company_id')
-                            ->label('شركة التأمين')
-                            ->options(InsuranceCompany::pluck('name','id')->toArray())
-                            ->required()
-                           ,
+                return [
+                    'id' => $appointment->id,
+                    'title' => $appointment->patient->name . ' - ' . $appointment->doctor->name,
+                    'start' => $start->toIso8601String(),
+                    'end' => $end->toIso8601String(),
+                    'backgroundColor' => $color,
+                    'borderColor' => $color,
+                ];
+            })
+            ->toArray();
+    }
 
-                        TextInput::make('service_name')
-                        ->default('كشف عادي او متابعه')
-                            ->hidden(),
+    public function getFormSchema(): array
+    {
+        return [
 
-                        TextInput::make('service_price')
-                            ->label('سعر الخدمة')
-                            ->numeric()
-                            ->default(0)
-                           ->hidden(),
-                    
+            Select::make('patient_id')
+                ->label('المريض')
+                ->relationship('patient','name')
+                ->searchable()
+                ->required(),
 
-DateTimePicker::make('appointment_date')
-    ->label('موعد الحجز')
-    ->required()
-    ->default(fn () => Carbon::now()) // التاريخ والوقت الحالي
+            Select::make('doctor_id')
+                ->label('الدكتور')
+                ->relationship('doctor','name')
+                ->searchable()
+                ->required(),
 
-    ];
-}
+            Select::make('insurance_company_id')
+                ->label('شركة التأمين')
+                ->options(InsuranceCompany::pluck('name','id'))
+                ->searchable()
+                ->required(),
 
+            TextInput::make('service_name')
+                ->default('كشف عادي او متابعة')
+                ->hidden(),
+
+            TextInput::make('service_price')
+                ->numeric()
+                ->default(0)
+                ->hidden(),
+
+            DatePicker::make('appointment_date')
+                ->label('التاريخ')
+                ->required(),
+
+            TimePicker::make('appointment_time')
+                ->label('الوقت')
+                ->seconds(false)
+                ->required(),
+        ];
+    }
 }
