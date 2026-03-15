@@ -7,7 +7,9 @@ class TeethProcedure extends Model
 {
     protected $fillable = [
         'patient_id',   // ربط بالزيارة
-        'tooth_number',     // رقم السن
+        'tooth_number',     //  من النوع جيسون علشان اضسف كا سنه علي شكل تاج في الفمنت رقم السن
+                'appointment_id',
+
         'procedure',        // الإجراء الحالي
         'notes',            // ملاحظات الإجراء الحالي
         'next_procedure',   // الإجراء المخطط للزيارة القادمة

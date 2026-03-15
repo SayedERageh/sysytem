@@ -40,12 +40,20 @@ class Appointment extends Model
 
     /* ========= Relations ========= */
 protected $attributes = [
-    'service_name' => 'كشف \ متابعة',
+'service_name' => 'كشف / متابعة',
     'service_price' => 0,
 ];
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+
+    // العلاقات الأخرى هنا
+
+    public function teethProcedures()
+    {
+        return $this->hasMany(TeethProcedure::class);
     }
 
     public function doctor()

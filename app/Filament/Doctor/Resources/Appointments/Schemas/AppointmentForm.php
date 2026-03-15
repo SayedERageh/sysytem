@@ -14,27 +14,7 @@ class AppointmentForm
     {
         return $schema
             ->components([
-                // تشخيص الحالة
-                Textarea::make('diagnosis_chart')
-                    ->label('تشخيص الحالة')
-                    ->rows(4),
-
-                // رقم السنة (JSON Tags)
-                TagsInput::make('teeth_number')
-                    ->label('رقم السن'),
-
-                // طول السن
-                TextInput::make('teeth_length')
-                ->label('طول العصب (W . L)'),
-
-                // معلومات الزيارة القادمة
-                TextInput::make('next_session')
-                    ->label('هنعمل اي  الزيارة القادمة'),
-
-                // ملاحظات
-                Textarea::make('notes')
-                    ->label('ملاحظات')
-                    ->rows(3),
+           
             ]);
     }
 }

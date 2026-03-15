@@ -5,6 +5,7 @@ namespace App\Filament\Doctor\Resources\Appointments;
 use App\Filament\Doctor\Resources\Appointments\Pages\CreateAppointment;
 use App\Filament\Doctor\Resources\Appointments\Pages\EditAppointment;
 use App\Filament\Doctor\Resources\Appointments\Pages\ListAppointments;
+use App\Filament\Doctor\Resources\Appointments\RelationManagers\TeethProcedureRelationManager;
 use App\Filament\Doctor\Resources\Appointments\Schemas\AppointmentForm;
 use App\Filament\Doctor\Resources\Appointments\Tables\AppointmentsTable;
 use App\Models\Appointment;
@@ -54,7 +55,7 @@ protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCale
     public static function getRelations(): array
     {
         return [
-            //
+           TeethProcedureRelationManager::class,
         ];
     }
 
