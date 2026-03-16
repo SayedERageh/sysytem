@@ -28,10 +28,12 @@ class DoctorPanelProvider extends PanelProvider
     ->id('doctor')
     ->path('doctor')
     ->login()
+    ->favicon(asset('images/favicon.png'))
          ->viteTheme('resources/css/filament/admin/theme.css')
         ->login()
         ->brandName(' وجــهــة الدكتور  ') // 👈 اسم التطبيق
     ->authGuard('doctor')
+    
     ->colors([
         'primary' => Color::Amber,
     ])

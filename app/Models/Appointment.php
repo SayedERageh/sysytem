@@ -20,10 +20,7 @@ class Appointment extends Model
         'insurance_company_id',
         'paid',
         'remaining',
-        'diagnosis_chart',   // جديد
-        'teeth_number',      // جديد
-        'teeth_length',      // جديد
-        'next_session',      // جديد
+        
         'notes',  
         'approval_difference'  ,         // جديد
         'payment_method'  ,         // جديد
@@ -48,7 +45,10 @@ protected $attributes = [
         return $this->belongsTo(Patient::class);
     }
 
-
+public function approvals()
+{
+    return $this->hasMany(Approval::class);
+}
     // العلاقات الأخرى هنا
 
     public function teethProcedures()

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Appointments;
 use App\Filament\Resources\Appointments\Pages\CreateAppointment;
 use App\Filament\Resources\Appointments\Pages\EditAppointment;
 use App\Filament\Resources\Appointments\Pages\ListAppointments;
+use App\Filament\Resources\Appointments\RelationManagers\ApprovalsRelationManager;
 use App\Filament\Resources\Appointments\RelationManagers\LabRequestsRelationManager;
 use App\Filament\Resources\Appointments\Schemas\AppointmentForm;
 use App\Filament\Resources\Appointments\Tables\AppointmentsTable;
@@ -42,7 +43,7 @@ protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCale
     public static function getRelations(): array
     {
         return [
-           LabRequestsRelationManager::class,
+            ApprovalsRelationManager::class,
         ];
     }
 

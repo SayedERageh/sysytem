@@ -45,4 +45,8 @@ public function radiologies()
 {
     return $this->hasMany(Radiology::class);
 }
+public function approvals()
+{
+    return $this->hasMany(Approval::class);
+}
 }

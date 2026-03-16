@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام الواجهة الخيالي</title>
+<title>نظام إدارة العيادات</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<!-- Apple Touch Icon -->
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}">
+<!-- Favicon 96x96 -->
+<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon/favicon-96x96.png') }}">
+<!-- أضف هذا في <head> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap" rel="stylesheet">
 <style>
@@ -30,7 +36,7 @@
   }
   .glow-btn:hover {
     box-shadow: 0 0 60px rgba(255,255,255,0.6), 0 0 80px rgba(128,0,255,0.5);
-    transform: scale(1.15) rotate(-2deg);
+    transform: scale(1.05);
   }
 </style>
 </head>
@@ -40,15 +46,27 @@
 
 <section class="h-screen flex flex-col items-center justify-center text-center text-white p-10">
   <h1 class="text-6xl md:text-7xl font-bold mb-6 animate__animated animate__fadeInDown animate__slow drop-shadow-lg">
-    مرحباً بك في نظام الواجــهـــة 
+    مرحباً بك في نظام إدارة العيادات
   </h1>
   <p class="text-2xl mb-10 animate__animated animate__fadeInUp animate__delay-1s drop-shadow-lg">
-    استعد لتجربة نظام فريدة، اضغط على الزر للدخول
+    اختر نوع الدخول
   </p>
-  <a href="/admin" class="glow-btn px-12 py-5 text-2xl font-bold text-purple-400 bg-white bg-opacity-20 rounded-full backdrop-blur-lg 
-     hover:bg-purple-600 hover:text-white animate__animated animate__pulse animate__infinite">
-    اذهب إلى النظام هنا
-  </a>
+
+<div class="flex gap-10 flex-wrap justify-center">
+    <!-- مربع الدكتور -->
+    <a href="http://127.0.0.1:8000/doctor" 
+       class="glow-btn px-12 py-12 text-3xl font-bold text-purple-400 bg-white bg-opacity-20 rounded-2xl backdrop-blur-lg hover:bg-purple-600 hover:text-white animate__animated animate__pulse animate__infinite flex flex-col items-center gap-4">
+       <i class="fa-solid fa-user-doctor text-6xl"></i> <!-- أيقونة الدكتور -->
+       دخول الدكتور
+    </a>
+
+    <!-- مربع السكرتارية -->
+    <a href="http://127.0.0.1:8000/admin" 
+       class="glow-btn px-12 py-12 text-3xl font-bold text-green-400 bg-white bg-opacity-20 rounded-2xl backdrop-blur-lg hover:bg-green-600 hover:text-white animate__animated animate__pulse animate__infinite flex flex-col items-center gap-4">
+       <i class="fa-solid fa-user-tie text-6xl"></i> <!-- أيقونة السكرتارية -->
+       دخول السكرتارية
+    </a>
+</div>
 </section>
 
 <script>
@@ -84,12 +102,9 @@ for(let i=0;i<50;i++){
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  
-  // الخلفية السوداء مع تأثير خفيف
   ctx.fillStyle = 'rgba(0,0,0,0.1)';
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // رسم النجوم
   stars.forEach(s=>{
     ctx.beginPath();
     ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
@@ -101,9 +116,9 @@ function draw(){
     if(s.x>canvas.width) s.x=0;
     if(s.y<0) s.y=canvas.height;
     if(s.y>canvas.height) s.y=0;
+    if(s.y>canvas.height) s.y=0;
   });
 
-  // رسم الهالات
   glows.forEach(g=>{
     let grd = ctx.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r);
     grd.addColorStop(0,g.color);

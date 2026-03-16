@@ -42,10 +42,14 @@ class CalendarWidget extends FullCalendarWidget
     public function fetchEvents(array $fetchInfo): array
     {
         $doctorColors = [
-            1 => '#3b82f6',
-            2 => '#22c55e',
-            3 => '#f59e0b',
-            4 => '#ef4444',
+      1 => '#3b82f6',
+2 => '#22c55e',
+3 => '#f59e0b',
+4 => '#ef4444',
+5 => '#8b5cf6',
+6 => '#06b6d4',
+7 => '#84cc16',
+8 => '#f97316',
         ];
 
         return Appointment::with(['patient','doctor'])

@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
         ->path('admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
         ->login()
+        
         ->brandName('اسنان مصر') // 👈 اسم التطبيق
         ->colors([
             'primary' => Color::Blue, // 👈 اللون الأحمر
