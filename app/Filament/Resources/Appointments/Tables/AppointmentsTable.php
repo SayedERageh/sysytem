@@ -34,7 +34,7 @@ TextColumn::make('patient.name')
         $patientId = $record->patient->id;
 
         // الرابط المباشر للـ edit في Doctor Panel
-        $url = url("/doctor/patients/{$patientId}/edit");
+        $url = url("/admin/patients/{$patientId}/edit");
 
         // نرجع HTML للرابط
         return '<a href="'.$url.'" class="text-blue-600 hover:underline">'.$state.'</a>';

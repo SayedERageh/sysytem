@@ -43,7 +43,7 @@ class StatsOverview extends BaseWidget
 
             // طلبات المعامل الشهرية
             Stat::make(
-                'تحاليل هذا الشهر',
+                'طلبات معامل هذا الشهر',
                 LabRequest::whereMonth('created_at', now()->month)
                     ->whereYear('created_at', now()->year)
                     ->count()

@@ -12,26 +12,12 @@ class AppointmentsStats extends StatsOverviewWidget
     protected function getStats(): array
     {
         return [
-
-            Stat::make(
-                'إجمالي المدفوع اليوم',
-                Appointment::whereDate('appointment_date', Carbon::today())
-                    ->sum('paid')
-            )
-            ->color('success'),
-
-            Stat::make(
-                'إجمالي فرق الموافقة',
-                Appointment::whereDate('appointment_date', Carbon::today())
-                    ->sum('approval_difference')
-            )
-            ->color('warning'),
-
-            Stat::make(
+ Stat::make(
                 'إجمالي الكاش',
                 Appointment::whereDate('appointment_date', Carbon::today())
                     ->where('payment_method', 'cash')
-                    ->sum('paid')
+                    ->selectRaw('SUM(paid + approval_difference) as total')
+                    ->value('total')
             )
             ->color('primary'),
 
@@ -39,7 +25,8 @@ class AppointmentsStats extends StatsOverviewWidget
                 'إجمالي الفيزا',
                 Appointment::whereDate('appointment_date', Carbon::today())
                     ->where('payment_method', 'visa')
-                    ->sum('paid')
+                    ->selectRaw('SUM(paid + approval_difference) as total')
+                    ->value('total')
             )
             ->color('info'),
 
