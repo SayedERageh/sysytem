@@ -51,19 +51,18 @@
   <p class="text-2xl mb-10 animate__animated animate__fadeInUp animate__delay-1s drop-shadow-lg">
     اختر نوع الدخول
   </p>
-
 <div class="flex gap-10 flex-wrap justify-center">
     <!-- مربع الدكتور -->
-    <a href="http://127.0.0.1:8000/doctor" 
+    <a href="{{ url('/doctor') }}" 
        class="glow-btn px-12 py-12 text-3xl font-bold text-purple-400 bg-white bg-opacity-20 rounded-2xl backdrop-blur-lg hover:bg-purple-600 hover:text-white animate__animated animate__pulse animate__infinite flex flex-col items-center gap-4">
-       <i class="fa-solid fa-user-doctor text-6xl"></i> <!-- أيقونة الدكتور -->
+       <i class="fa-solid fa-user-doctor text-6xl"></i>
        دخول الدكتور
     </a>
 
     <!-- مربع السكرتارية -->
-    <a href="http://127.0.0.1:8000/admin" 
+    <a href="{{ url('/admin') }}" 
        class="glow-btn px-12 py-12 text-3xl font-bold text-green-400 bg-white bg-opacity-20 rounded-2xl backdrop-blur-lg hover:bg-green-600 hover:text-white animate__animated animate__pulse animate__infinite flex flex-col items-center gap-4">
-       <i class="fa-solid fa-user-tie text-6xl"></i> <!-- أيقونة السكرتارية -->
+       <i class="fa-solid fa-user-tie text-6xl"></i>
        دخول السكرتارية
     </a>
 </div>
