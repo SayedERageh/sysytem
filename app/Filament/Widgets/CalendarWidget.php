@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
 class CalendarWidget extends FullCalendarWidget
 {
     protected static ?string $heading = 'مواعيد العيادة';
+    protected static bool $isDiscovered = false;
+
 
     public Model|string|null $model = Appointment::class;
 
