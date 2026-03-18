@@ -39,20 +39,20 @@ class ExpensesTable
                     ->sortable(),
 
             ])
-            ->filters([
- Filter::make('appointment_date')
-                    ->label('اليوم')
-                    ->form([
-                        DatePicker::make('date')
-                            ->label('اختر اليوم')
-                            ->default(now()),
-                    ])
-                    ->query(function (Builder $query, array $data) {
-                        return $query->when(
-                            $data['date'],
-                            fn ($query) => $query->whereDate('appointment_date', $data['date'])
-                        );
-                    }),
+            
+            ->filters([Filter::make('created_at')
+    ->label('اليوم')
+    ->form([
+        DatePicker::make('date')
+            ->label('اختر اليوم')
+            ->default(now()),
+    ])
+    ->query(function (Builder $query, array $data) {
+        return $query->when(
+            $data['date'],
+            fn ($query) => $query->whereDate('created_at', $data['date'])
+        );
+    }),
             ])
             ->recordActions([
                 EditAction::make(),
