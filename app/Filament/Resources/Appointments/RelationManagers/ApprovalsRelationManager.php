@@ -34,10 +34,7 @@ class ApprovalsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-Select::make('patient_id')
-    ->relationship('appointment.patient', 'name')
-    ->hidden() // لو مش عايز المستخدم يغيرها
-    ->default(fn ($record) => $record->appointment->patient_id ?? null),
+
                 TextInput::make('name')
                     ->label('اسم الموافقة')
                     ->maxLength(255),
@@ -84,7 +81,14 @@ Select::make('patient_id')
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+               CreateAction::make()
+    ->mutateFormDataUsing(function (array $data, RelationManager $livewire) {
+        $appointment = $livewire->getOwnerRecord();
+
+        $data['patient_id'] = $appointment->patient_id;
+
+        return $data;
+    }),
                 AssociateAction::make(),
             ])
             ->recordActions([

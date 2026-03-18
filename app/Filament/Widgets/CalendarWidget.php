@@ -92,23 +92,19 @@ class CalendarWidget extends FullCalendarWidget
             Select::make('doctor_id')
                 ->label('الدكتور')
                 ->relationship('doctor','name')
-                ->searchable()
+             
                 ->required(),
 
             Select::make('insurance_company_id')
                 ->label('شركة التأمين')
                 ->options(InsuranceCompany::pluck('name','id'))
                 ->searchable()
+
                 ->required(),
 
-            TextInput::make('service_name')
-                ->default('كشف عادي او متابعة')
-                ->hidden(),
+      
 
-            TextInput::make('service_price')
-                ->numeric()
-                ->default(0)
-                ->hidden(),
+        
 
             DatePicker::make('appointment_date')
                 ->label('التاريخ')

@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
 use App\Filament\Widgets\CalendarWidget;
+use App\Filament\Widgets\DoctorsWorkingHours;
 use BackedEnum;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
@@ -21,6 +22,7 @@ protected static string|UnitEnum|null $navigationGroup = 'إدارة الحجو�
     protected function getHeaderWidgets(): array
     {
         return [
+            DoctorsWorkingHours::class,
             CalendarWidget::class,
         ];
     }

@@ -31,9 +31,7 @@ class MissedAppointmentsTable extends TableWidget
                 TextColumn::make('doctor.name')
                     ->label('الدكتور'),
 
-                TextColumn::make('appointment_date')
-                    ->label('موعد الحجز')
-                    ->dateTime('Y-m-d H:i'),
+    
             ])
 
             ->filters([
@@ -45,18 +43,21 @@ class MissedAppointmentsTable extends TableWidget
             ])
 
             ->recordActions([
-                Action::make('whatsapp')
-                    ->label('واتساب')
-                    ->icon('heroicon-o-chat-bubble-left-right')
-                    ->url(fn ($record) =>
-                        'https://wa.me/2'.$record->patient->phone.
-                        '?text='.urlencode(
-                            "مرحبًا {$record->patient->name}\n".
-                            "نذكرك بموعدك مع الدكتور {$record->doctor->name}\n".
-                            "التاريخ: ".$record->appointment_date
-                        )
-                    )
-                    ->openUrlInNewTab(),
+        Action::make('whatsapp')
+    ->label('واتساب')
+    ->icon('heroicon-o-chat-bubble-left-right')
+    ->url(fn ($record) =>
+        'https://wa.me/2' . $record->patient->phone .
+        '?text=' . urlencode(
+            "👋 مرحبًا {$record->patient->name}\n\n" .
+            "📢 تذكير بموعدك\n" .
+            "👨‍⚕️ الدكتور: {$record->doctor->name}\n" .
+            "📅 التاريخ: {$record->appointment_date}\n" .
+            "⏰ الساعة: {$record->appointment_time}\n\n" .
+            "📍 في انتظارك، نتمنى لك يوم سعيد 🌷"
+        )
+    )
+    ->openUrlInNewTab(),
             ])
 
             ->toolbarActions([

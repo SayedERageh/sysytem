@@ -6,6 +6,7 @@ use App\Filament\Resources\Patients\Pages\CreatePatient;
 use App\Filament\Resources\Patients\Pages\EditPatient;
 use App\Filament\Resources\Patients\Pages\ListPatients;
 use App\Filament\Resources\Patients\RelationManagers\AppointmentsRelationManager;
+use App\Filament\Resources\Patients\RelationManagers\ApprovalsRelationManager;
 use App\Filament\Resources\Patients\RelationManagers\LabRequestsRelationManager;
 use App\Filament\Resources\Patients\RelationManagers\RadiologiesRelationManager;
 use App\Filament\Resources\Patients\Schemas\PatientForm;
@@ -49,6 +50,8 @@ protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser
             RadiologiesRelationManager::class,
             AppointmentsRelationManager::class,
             LabRequestsRelationManager::class,
+                    ApprovalsRelationManager::class,
+
         ];
     }
 public static function getWidgets(): array
