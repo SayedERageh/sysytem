@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Appointment;
+use App\Models\Expense;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Carbon\Carbon;
@@ -14,7 +15,7 @@ class AppointmentsStats extends StatsOverviewWidget
         return [
 
             Stat::make(
-                'المدفوع اليوم خ',
+                'المدفوع اليوم الخاص',
                 Appointment::whereDate('appointment_date', Carbon::today())
                     ->sum('paid')
             )
@@ -34,6 +35,14 @@ class AppointmentsStats extends StatsOverviewWidget
         ->value('total')
 )
 ->color('success'),
+    // ✅ الجديد هنا
+            Stat::make(
+                'إجمالي المصروفات اليوم',
+                Expense::whereDate('created_at', Carbon::today())
+                    ->sum('price')
+            )
+            ->color('danger'),
+
 
         ];
     }
